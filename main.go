@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	config "github.com/ankur12345678/shout/Config"
 	controllers "github.com/ankur12345678/shout/Controllers"
 	migration "github.com/ankur12345678/shout/Migration"
@@ -13,16 +11,6 @@ import (
 func main() {
 	//defining routes
 	log.Info("Starting Server...")
-	fmt.Printf(`%s
-     _______. __    __    ______    __    __  .___________.
-    /       ||  |  |  |  /  __  \  |  |  |  | |           |
-   |   (---- |  |__|  | |  |  |  | |  |  |  |  ---|  |----
-    \   \    |   __   | |  |  |  | |  |  |  |     |  |     
-.----)   |   |  |  |  | |   --   | |   --   |     |  |     
-|_______/    |__|  |__|  \______/   \______/      |__|     
-                                                           
-`, "")
-
 
 	//loading config
 	config := config.LoadConfig()
@@ -31,5 +19,7 @@ func main() {
 		DB:     db,
 		Config: config,
 	}
+	migration.SeedDB(db)
 	routes.InitRoutes(&ctrl)
+
 }

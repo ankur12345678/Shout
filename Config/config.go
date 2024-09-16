@@ -6,7 +6,7 @@ import (
 )
 
 type Creds struct {
-	SERVER_PORT int `env:"SERVER_PORT"`
+	SERVER_PORT int    `env:"SERVER_PORT"`
 	DB_HOST     string `env:DB_HOST`
 	DB_USER     string `env:DB_USER`
 	DB_PASSWORD string `env:DB_PASSWORD`

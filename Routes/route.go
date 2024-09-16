@@ -21,5 +21,14 @@ func InitRoutes(ctrl *controllers.BaseController) {
 	r.GET("/blog/:id", ctrl.ShowBlogById)
 	r.GET("/blog", ctrl.ShowAllBlogs)
 	log.Info("Initializing Routes : Success.....")
+	fmt.Printf(`%s
+     _______. __    __    ______    __    __  .___________.
+    /       ||  |  |  |  /  __  \  |  |  |  | |           |
+   |   (---- |  |__|  | |  |  |  | |  |  |  |  ---|  |----
+    \   \    |   __   | |  |  |  | |  |  |  |     |  |     
+.----)   |   |  |  |  | |   --   | |   --   |     |  |     
+|_______/    |__|  |__|  \______/   \______/      |__|     
+                                                           
+`, "")
 	r.Run(fmt.Sprintf(":%v", config.SERVER_PORT))
 }
