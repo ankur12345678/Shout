@@ -7,16 +7,16 @@ import (
 )
 
 type Comment struct {
-	ID          uint   `gorm:"primaryKey"`
-	CommentUUID string `gorm:"unique"`
-	UserID      int
-	User        User `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
-	PostID      int
-	Post        Post `gorm:"foreignKey:PostID;references:ID;constraint:OnDelete:CASCADE;"`
-	Content     string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	ID          uint           `gorm:"primaryKey" json:"id"`
+	CommentUUID string         `gorm:"unique;not null;" json:"comment_uuid"`
+	UserID      int            `gorm:"not null" json:"user_id"`
+	User        User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
+	PostID      int            `gorm:"not null" json:"post_id"`
+	Post        Post           `gorm:"foreignKey:PostID;references:ID;constraint:OnDelete:CASCADE;"`
+	Content     string         `json:"content"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
 type commentRepo struct {

@@ -4,6 +4,8 @@ import "gorm.io/gorm"
 
 type IUser interface {
 	GetById(UserUUID string) (*User, error)
+	GetByEmail(Email string) (*User, error)
+	GetByUserName(UserName string) (*User, error)
 	GetWithTx(where *User, tx *gorm.DB) (*User, error)
 	Create(u *User) error
 	CreateWithTx(tx *gorm.DB, u *User) error
@@ -31,4 +33,3 @@ type IComment interface {
 	UpdateWithTx(tx *gorm.DB, c *Comment, CommentUUID string) error
 	Delete(CommentUUID string) error
 }
-

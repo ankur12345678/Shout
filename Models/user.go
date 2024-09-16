@@ -7,16 +7,16 @@ import (
 )
 
 type User struct {
-	ID             uint   `gorm:"primaryKey"`
-	UserUUID       string `gorm:"unique"`
-	Name           string
-	Email          string `gorm:"unique"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-	DeletedAt      gorm.DeletedAt `gorm:"index"`
-	UserName       string         `gorm:"unique"`
-	ProfilePicture string
-	Password       string
+	ID             uint           `gorm:"primaryKey" json:"id"`
+	UserUUID       string         `gorm:"unique;not null;" json:"user_uuid"`
+	Name           string         `gorm:"not null" json:"name"`
+	Email          string         `gorm:"unique" json:"email"`
+	CreatedAt      time.Time      `json:"created_at"`
+	UpdatedAt      time.Time      `json:"updated_at"`
+	DeletedAt      gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	UserName       string         `gorm:"unique;not null;" json:"username"`
+	ProfilePicture string         `json:"profile_picture"`
+	Password       string         `gorm:"not null"`
 }
 
 type userRepo struct {
@@ -60,4 +60,12 @@ func (r *userRepo) UpdateWithTx(tx *gorm.DB, u *User, UserUUID string) error {
 
 func (r *userRepo) GetById(UserUUID string) (*User, error) {
 	return r.GetWithTx(&User{UserUUID: UserUUID}, r.DB)
+}
+
+func (r *userRepo) GetByEmail(Email string) (*User, error) {
+	return r.GetWithTx(&User{Email: Email}, r.DB)
+}
+
+func (r *userRepo) GetByUserName(UserName string) (*User, error) {
+	return r.GetWithTx(&User{UserName: UserName}, r.DB)
 }

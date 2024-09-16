@@ -7,17 +7,17 @@ import (
 )
 
 type Post struct {
-	ID         uint   `gorm:"primaryKey"`
-	PostUUID   string `gorm:"unique"`
-	Title      string
-	Content    string
-	UserID     int
-	User       User `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
-	Reputation int
-	Share      int
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	ID         uint           `gorm:"primaryKey" json:"id"`
+	PostUUID   string         `gorm:"unique;not null;" json:"post_uuid"`
+	Title      string         `gorm:"not null" json:"title"`
+	Content    string         `gorm:"not null" json:"content"`
+	UserID     int            `gorm:"not null" json:"user_id"`
+	User       User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
+	Reputation int            `json:"reputation"`
+	Share      int            `json:"share"`
+	CreatedAt  time.Time      `json:"created_at"`
+	UpdatedAt  time.Time      `json:"updated_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
 type postRepo struct {

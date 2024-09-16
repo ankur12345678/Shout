@@ -14,7 +14,7 @@ func InitRoutes(ctrl *controllers.BaseController) {
 	config := config.LoadConfig()
 	r := gin.Default()
 	r.GET("/", ctrl.RootHandler)
-	r.POST("/singup", ctrl.SignUpHandler)
+	r.POST("/signup", ctrl.SignUpHandler)
 	r.POST("/login", ctrl.LoginHandler)
 	r.POST("/blog", ctrl.InsertBlogHandler)
 	r.PUT("/blog", ctrl.UpdateBlogHandler)

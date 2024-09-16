@@ -19,6 +19,7 @@ func main() {
 		DB:     db,
 		Config: config,
 	}
+	controllers.Ctrl = ctrl
 	migration.SeedDB(db)
 	routes.InitRoutes(&ctrl)
 
