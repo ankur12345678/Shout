@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,10 +20,11 @@ func VerifyPassword(password, hash string) bool {
 	return err == nil
 }
 
-func GenerateJWT(secret string,email string,expiresIn int) (string, error) {
+func GenerateJWT(secret string, email string, expiresIn int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"email": email,
+			"jti":   uuid.New().String(),
 			"exp":   time.Now().Add(time.Second * time.Duration(expiresIn)).Unix(),
 		})
 	tokenString, err := token.SignedString([]byte(secret))

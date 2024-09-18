@@ -6,16 +6,18 @@ import (
 )
 
 type Creds struct {
-	SERVER_PORT int    `env:"SERVER_PORT"`
-	DB_HOST     string `env:DB_HOST`
-	DB_USER     string `env:DB_USER`
-	DB_PASSWORD string `env:DB_PASSWORD`
-	DB_NAME     string `env:DB_NAME`
-	DB_PORT     int    `env:DB_PORT`
-	DB_SSL_MODE string `env:DB_SSL_MODE`
-	DB_TIMEZONE string `env:DB_TIMEZONE`
-	JWT_SECRET  string `env:JWT_SECRET`
-	JWT_EXPIRY_TIME int `env:JWT_EXPIRY_TIME`
+	SERVER_PORT               int    `env:"SERVER_PORT"`
+	DB_HOST                   string `env:DB_HOST`
+	DB_USER                   string `env:DB_USER`
+	DB_PASSWORD               string `env:DB_PASSWORD`
+	DB_NAME                   string `env:DB_NAME`
+	DB_PORT                   int    `env:DB_PORT`
+	DB_SSL_MODE               string `env:DB_SSL_MODE`
+	DB_TIMEZONE               string `env:DB_TIMEZONE`
+	JWT_SECRET                string `env:JWT_SECRET`
+	JWT_EXPIRY_TIME           int    `env:JWT_EXPIRY_TIME`
+	REDIS_CONNECTION_ADDRESS  string `env:REDIS_CONNECTION_ADDRESS`
+	REDIS_CONNECTION_PASSWORD string `env:REDIS_CONNECTION_PASSWORD`
 }
 
 // load config through viper
