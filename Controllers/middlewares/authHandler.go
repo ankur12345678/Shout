@@ -3,19 +3,16 @@ package middlewares
 import (
 	"strings"
 
-	config "github.com/ankur12345678/shout/Config"
+	controllers "github.com/ankur12345678/shout/Controllers"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt"
-	log "github.com/sirupsen/logrus"
 )
 
 func HandleAuth(c *gin.Context) {
 	//remove loading of configs from here
-	//TODO: remove load config from here. It is loading again and again when the middleware is called
-	//TODO: move it is in middlewares
-	env := config.LoadConfig()
+	env := controllers.Ctrl.Config
 	authHeader := c.GetHeader("Authorization")
-	log.Info("auth", authHeader)
 	if authHeader == "" {
 		c.AbortWithStatusJSON(401, gin.H{
 			"error_message": "No auth token found",
@@ -45,15 +42,35 @@ func HandleAuth(c *gin.Context) {
 	//error handling
 	if !parsedToken.Valid {
 		c.AbortWithStatusJSON(200, gin.H{
-			"error_message": "Inavlid Auth token",
+			"error_message": "Invalid Auth token",
 		})
 		return
 
 	}
-	//setting useruuid in the context so that we can use it in token generation in /refresh
+	//setting jit in the context so that we can use it in token generation in /refresh
 	emailFromClaims := claims["email"]
 	email := emailFromClaims.(string)
+
+	jtiFromClaims := claims["jti"]
+	jti := jtiFromClaims.(string)
+
+	//check in redis for this jti. if the same access token exist corresponding to this jti then return blacklisted!
+	val, err := controllers.Ctrl.RedisClient.Get(controllers.Ctrl.RedisClient.Context(), jti).Result()
+	if err != nil && err != redis.Nil {
+		c.AbortWithStatusJSON(200, gin.H{
+			"error_message": "error getting key from redis",
+		})
+		return
+	}
+	if val == authToken {
+		c.AbortWithStatusJSON(200, gin.H{
+			"error_message": "blacklisted the token, try login again",
+		})
+		return
+	}
+	c.Set("accessToken", authToken)
 	c.Set("email", email)
+	c.Set("jti", jti)
 	c.Next()
 
 }

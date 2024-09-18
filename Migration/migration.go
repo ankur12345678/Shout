@@ -1,10 +1,12 @@
 package migration
 
 import (
+	"context"
 	"fmt"
 
 	config "github.com/ankur12345678/shout/Config"
 	models "github.com/ankur12345678/shout/Models"
+	"github.com/go-redis/redis/v8"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -21,4 +23,18 @@ func InitDB() *gorm.DB {
 	db.AutoMigrate(&models.User{}, &models.Post{}, &models.Comment{})
 	log.Info("Connected to DB!")
 	return db
+}
+
+func InitRedisClient(c *config.Creds) *redis.Client {
+	client := redis.NewClient(&redis.Options{
+		Addr:     c.REDIS_CONNECTION_ADDRESS,
+		Password: c.REDIS_CONNECTION_PASSWORD, // no password set
+		DB:       0,                           // use default DB
+	})
+	_, err := client.Ping(context.Background()).Result()
+	if err != nil {
+		log.Error("REDIS CONNECTION: FAILED...")
+	}
+	log.Info("REDIS CONNECTION: SUCCESS...")
+	return client
 }
