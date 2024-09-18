@@ -20,14 +20,7 @@ func main() {
 		Config: config,
 	}
 	controllers.Ctrl = ctrl
-	//init redis client
-	redisClient := migration.InitRedisClient(ctrl.Config)
-	controllers.Ctrl.RedisClient = redisClient
-
-	//seeding data for test
 	migration.SeedDB(db)
-
-	//initializing routes
 	routes.InitRoutes(&ctrl)
 
 }

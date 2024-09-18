@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	config "github.com/ankur12345678/shout/Config"
-	"github.com/go-redis/redis/v8"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -13,7 +12,6 @@ import (
 type BaseController struct {
 	DB     *gorm.DB
 	Config *config.Creds
-	RedisClient *redis.Client
 }
 
 var Ctrl BaseController  //GLOBAL DB instance for controllers only
