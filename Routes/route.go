@@ -5,6 +5,7 @@ import (
 
 	config "github.com/ankur12345678/shout/Config"
 	controllers "github.com/ankur12345678/shout/Controllers"
+	"github.com/ankur12345678/shout/middlewares"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -20,6 +21,7 @@ func InitRoutes(ctrl *controllers.BaseController) {
 	r.PUT("/blog", ctrl.UpdateBlogHandler)
 	r.GET("/blog/:id", ctrl.ShowBlogById)
 	r.GET("/blog", ctrl.ShowAllBlogs)
+	r.POST("/refresh", middlewares.HandleAuth, ctrl.HandleRefresh)
 	log.Info("Initializing Routes : Success.....")
 	fmt.Printf(`%s
      _______. __    __    ______    __    __  .___________.

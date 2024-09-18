@@ -14,7 +14,7 @@ type BaseController struct {
 	Config *config.Creds
 }
 
-var Ctrl BaseController
+var Ctrl BaseController  //GLOBAL DB instance for controllers only
 
 func UUIDGen(category string) string {
 	id, err := gonanoid.New(10)

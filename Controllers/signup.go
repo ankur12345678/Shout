@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	models "github.com/ankur12345678/shout/Models"
+	"github.com/ankur12345678/shout/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -14,7 +15,7 @@ func (base *BaseController) SignUpHandler(c *gin.Context) {
 	userRepo := models.InitUserRepo(Ctrl.DB)
 	//check if username exists previously
 	_, err := userRepo.GetByUserName(reqUser.UserName)
-	if err != gorm.ErrRecordNotFound  {
+	if err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusOK, gin.H{
 			"error_message": "username exists, please try to login",
 		})
@@ -22,13 +23,21 @@ func (base *BaseController) SignUpHandler(c *gin.Context) {
 	}
 	//check if email exists previously
 	_, err = userRepo.GetByEmail(reqUser.Email)
-	if err != gorm.ErrRecordNotFound  {
+	if err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusOK, gin.H{
 			"error_message": "email exists, please try to login",
 		})
 		return
 	}
 	reqUser.UserUUID = UUIDGen("USER")
+	hashedPassword, err := utils.HashPassword(reqUser.Password)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error_message": "error while hashing password",
+		})
+		return
+	}
+	reqUser.Password = hashedPassword
 	err = userRepo.Create(&reqUser)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

@@ -14,6 +14,8 @@ type Creds struct {
 	DB_PORT     int    `env:DB_PORT`
 	DB_SSL_MODE string `env:DB_SSL_MODE`
 	DB_TIMEZONE string `env:DB_TIMEZONE`
+	JWT_SECRET  string `env:JWT_SECRET`
+	JWT_EXPIRY_TIME int `env:JWT_EXPIRY_TIME`
 }
 
 // load config through viper
