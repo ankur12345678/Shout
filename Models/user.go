@@ -7,16 +7,16 @@ import (
 )
 
 type User struct {
-	ID             uint           `gorm:"primaryKey" json:"id"`
+	ID             uint           `gorm:"primaryKey" json:"-"`
 	UserUUID       string         `gorm:"unique;not null;" json:"user_uuid"`
 	Name           string         `gorm:"not null" json:"name"`
 	Email          string         `gorm:"unique" json:"email"`
 	CreatedAt      time.Time      `json:"created_at"`
 	UpdatedAt      time.Time      `json:"updated_at"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
 	UserName       string         `gorm:"unique;not null;" json:"username"`
 	ProfilePicture string         `json:"profile_picture"`
-	Password       string         `gorm:"not null"`
+	Password       string         `gorm:"not null" json:"omit"`
 }
 
 type userRepo struct {

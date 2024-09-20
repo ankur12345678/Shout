@@ -7,7 +7,7 @@ import (
 )
 
 type Comment struct {
-	ID          uint           `gorm:"primaryKey" json:"id"`
+	ID          uint           `gorm:"primaryKey" json:"-"`
 	CommentUUID string         `gorm:"unique;not null;" json:"comment_uuid"`
 	UserID      int            `gorm:"not null" json:"user_id"`
 	User        User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
