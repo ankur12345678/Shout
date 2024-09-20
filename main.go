@@ -10,7 +10,7 @@ import (
 
 func main() {
 	//defining routes
-	log.Info("Starting Server...")
+	log.Info("Starting Server....")
 
 	//loading config
 	config := config.LoadConfig()
