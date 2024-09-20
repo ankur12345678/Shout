@@ -12,12 +12,12 @@ type Post struct {
 	Title      string         `gorm:"not null" json:"title"`
 	Content    string         `gorm:"not null" json:"content"`
 	UserID     int            `gorm:"not null" json:"user_id"`
-	User       User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;"`
+	User       User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;" json:"-"`
 	Reputation int            `json:"reputation"`
 	Share      int            `json:"share"`
 	CreatedAt  time.Time      `json:"created_at"`
 	UpdatedAt  time.Time      `json:"updated_at"`
-	DeletedAt  gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-" `
 }
 
 type postRepo struct {
