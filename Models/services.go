@@ -15,9 +15,3 @@ func InitPostRepo(DB *gorm.DB) IPost {
 		DB: DB,
 	}
 }
-
-func InitCommentRepo(DB *gorm.DB) IComment {
-	return &commentRepo{
-		DB: DB,
-	}
-}

@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	ID             uint           `gorm:"primaryKey" json:"-"`
+	ID             uint           `gorm:"primaryKey" json:"id"`
 	UserUUID       string         `gorm:"unique;not null;" json:"user_uuid"`
 	Name           string         `gorm:"not null" json:"name"`
 	Email          string         `gorm:"unique" json:"email"`

@@ -7,17 +7,19 @@ import (
 )
 
 type Post struct {
-	ID         uint           `gorm:"primaryKey" json:"-"`
-	PostUUID   string         `gorm:"unique;not null;" json:"post_uuid"`
-	Title      string         `gorm:"not null" json:"title"`
-	Content    string         `gorm:"not null" json:"content"`
-	UserID     int            `gorm:"not null" json:"user_id"`
-	User       User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;" json:"-"`
-	Reputation int            `json:"reputation"`
-	Share      int            `json:"share"`
-	CreatedAt  time.Time      `json:"created_at"`
-	UpdatedAt  time.Time      `json:"updated_at"`
-	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-" `
+	ID           uint           `gorm:"primaryKey" json:"id"`
+	PostUUID     string         `gorm:"unique;not null;" json:"post_uuid"`
+	Title        string         `gorm:"not null" json:"title"`
+	Content      string         `gorm:"not null" json:"content"`
+	UserID       int            `gorm:"not null" json:"user_id"`
+	User         User           `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;" json:"-"`
+	Likes        int            `json:"Likes"`
+	Replies      int            `json:"replies"`
+	ParentPostId *int           `gorm:"index;constraints:OnDelete:CASCADE" json:"parent_post_id"`
+	ParentPost   *Post          `gorm:"foreignKey:ParentPostId;references:ID;constraints:OnDelete:CASCADE;" json:"-"`
+	CreatedAt    time.Time      `json:"created_at"`
+	UpdatedAt    time.Time      `json:"updated_at"`
+	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-" `
 }
 
 type postRepo struct {
@@ -36,8 +38,8 @@ func (r *postRepo) CreateWithTx(tx *gorm.DB, p *Post) error {
 }
 
 // Delete implements IUser.
-func (r *postRepo) Delete(PostUUID string) error {
-	err := r.DB.Where(&Post{PostUUID: PostUUID}).Delete(&Post{}).Error
+func (r *postRepo) Delete(PostID uint) error {
+	err := r.DB.Where(&Post{ID: PostID}).Delete(&Post{}).Error
 	return err
 }
 
@@ -49,16 +51,16 @@ func (r *postRepo) GetWithTx(where *Post, tx *gorm.DB) (*Post, error) {
 }
 
 // Update implements IUser.
-func (r *postRepo) Update(p *Post, PostUUID string) error {
-	return r.UpdateWithTx(r.DB, p, PostUUID)
+func (r *postRepo) Update(p *Post, PostID uint) error {
+	return r.UpdateWithTx(r.DB, p, PostID)
 }
 
 // UpdateWithTx implements IUser.
-func (r *postRepo) UpdateWithTx(tx *gorm.DB, p *Post, PostUUID string) error {
-	err := tx.Model(&Post{}).Where(&Post{PostUUID: PostUUID}).Updates(p).Error
+func (r *postRepo) UpdateWithTx(tx *gorm.DB, p *Post, PostID uint) error {
+	err := tx.Model(&Post{}).Where(&Post{ID: PostID}).Updates(p).Error
 	return err
 }
 
-func (r *postRepo) GetById(PostUUID string) (*Post, error) {
-	return r.GetWithTx(&Post{PostUUID: PostUUID}, r.DB)
+func (r *postRepo) GetById(PostID uint) (*Post, error) {
+	return r.GetWithTx(&Post{ID: PostID}, r.DB)
 }

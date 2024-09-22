@@ -20,7 +20,8 @@ func InitRoutes(ctrl *controllers.BaseController) {
 	r.POST("/blog", middlewares.HandleAuth, ctrl.InsertBlogHandler)
 	r.PUT("/blog", middlewares.HandleAuth, ctrl.UpdateBlogHandler)
 	r.GET("/blog/:id", middlewares.HandleAuth, ctrl.ShowBlogById)
-	r.GET("/blog", middlewares.HandleAuth, ctrl.ShowAllBlogs)
+	r.GET("/blog", middlewares.HandleAuth, ctrl.ShowMyBlogs)
+	r.DELETE("/blog/:id", middlewares.HandleAuth, ctrl.DeleteBlogById)
 	r.POST("/refresh", middlewares.HandleAuth, ctrl.HandleRefresh)
 
 	r.POST("/logout", middlewares.HandleAuth, ctrl.HandleLogOut)

@@ -20,7 +20,7 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Error("Error connecting DB...Exiting...")
 	}
-	db.AutoMigrate(&models.User{}, &models.Post{}, &models.Comment{})
+	db.AutoMigrate(&models.User{}, &models.Post{})
 	log.Info("Connected to DB!")
 	return db
 }

@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type IUser interface {
 	GetById(UserUUID string) (*User, error)
@@ -15,21 +17,11 @@ type IUser interface {
 }
 
 type IPost interface {
-	GetById(PostUUID string) (*Post, error)
+	GetById(PostID uint) (*Post, error)
 	GetWithTx(where *Post, tx *gorm.DB) (*Post, error)
 	Create(p *Post) error
 	CreateWithTx(tx *gorm.DB, p *Post) error
-	Update(p *Post, PostUUID string) error
-	UpdateWithTx(tx *gorm.DB, p *Post, PostUUID string) error
-	Delete(PostUUID string) error
-}
-
-type IComment interface {
-	GetById(CommentUUID string) (*Comment, error)
-	GetWithTx(where *Comment, tx *gorm.DB) (*Comment, error)
-	Create(c *Comment) error
-	CreateWithTx(tx *gorm.DB, c *Comment) error
-	Update(c *Comment, CommentUUID string) error
-	UpdateWithTx(tx *gorm.DB, c *Comment, CommentUUID string) error
-	Delete(CommentUUID string) error
+	Update(p *Post, PostID uint) error
+	UpdateWithTx(tx *gorm.DB, p *Post, PostID uint) error
+	Delete(PostID uint) error
 }
